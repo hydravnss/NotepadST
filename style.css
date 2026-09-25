@@ -1,0 +1,235 @@
+/* ==========================
+   BOUTON NOTEPADST
+========================== */
+
+#notepadst-button {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    gap: 7px;
+
+    padding: 7px 10px;
+    margin: 3px;
+
+    color: var(--SmartThemeBodyColor, #eee);
+    background: #080808;
+
+    border: 1px solid #292929;
+    border-radius: 8px;
+
+    cursor: pointer;
+    user-select: none;
+
+    font-size: 13px;
+    line-height: 1.2;
+}
+
+#notepadst-button:hover {
+    background: #202020;
+    border-color: #444;
+}
+
+#notepadst-button i {
+    font-size: 15px;
+}
+
+
+/* ==========================
+   FOND DE LA FENÊTRE
+========================== */
+
+#notepadst-overlay {
+    position: fixed;
+    inset: 0;
+
+    z-index: 100000;
+
+    display: none;
+    align-items: center;
+    justify-content: center;
+
+    padding: 18px;
+
+    background: rgba(0, 0, 0, 0.72);
+
+    backdrop-filter: blur(3px);
+    -webkit-backdrop-filter: blur(3px);
+}
+
+#notepadst-overlay.open {
+    display: flex;
+}
+
+
+/* ==========================
+   BLOC-NOTES
+========================== */
+
+#notepadst-window {
+    display: flex;
+    flex-direction: column;
+
+    width: min(680px, 100%);
+    height: min(72vh, 680px);
+    min-height: 280px;
+
+    overflow: hidden;
+
+    color: #ededed;
+    background: #080808;
+
+    border: 1px solid #303030;
+    border-radius: 14px;
+
+    box-shadow: 0 22px 80px rgba(0, 0, 0, 0.7);
+}
+
+
+/* ==========================
+   BARRE DU HAUT
+========================== */
+
+.notepadst-header {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+
+    gap: 12px;
+    padding: 14px 16px;
+
+    background: #101010;
+    border-bottom: 1px solid #292929;
+}
+
+.notepadst-title {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+
+    font-size: 15px;
+    font-weight: 600;
+}
+
+.notepadst-title i {
+    color: #ccc;
+}
+
+
+/* ==========================
+   BOUTONS
+========================== */
+
+.notepadst-actions {
+    display: flex;
+    gap: 8px;
+}
+
+.notepadst-actions button {
+    display: grid;
+    place-items: center;
+
+    width: 34px;
+    height: 34px;
+
+    color: #bbb;
+    background: #1b1b1b;
+
+    border: 1px solid #303030;
+    border-radius: 8px;
+
+    cursor: pointer;
+}
+
+.notepadst-actions button:hover {
+    color: #fff;
+    background: #292929;
+}
+
+
+/* ==========================
+   ZONE DE TEXTE
+========================== */
+
+#notepadst-text {
+    flex: 1;
+
+    width: 100%;
+    min-height: 0;
+
+    box-sizing: border-box;
+    resize: none;
+
+    padding: 18px;
+
+    color: #e8e8e8;
+    background: #080808;
+
+    border: 0;
+    outline: none;
+
+    font-family:
+        -apple-system,
+        BlinkMacSystemFont,
+        "SF Pro Text",
+        "Segoe UI",
+        sans-serif;
+
+    font-size: 15px;
+    line-height: 1.65;
+
+    caret-color: #fff;
+}
+
+#notepadst-text::placeholder {
+    color: #666;
+}
+
+
+/* ==========================
+   BARRE DU BAS
+========================== */
+
+.notepadst-footer {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+
+    gap: 10px;
+    padding: 10px 16px;
+
+    color: #777;
+    background: #101010;
+
+    border-top: 1px solid #292929;
+
+    font-size: 11px;
+}
+
+
+/* ==========================
+   IPHONE / MOBILE
+========================== */
+
+@media (max-width: 600px) {
+
+    #notepadst-overlay {
+        padding: 12px;
+    }
+
+    #notepadst-window {
+        width: 100%;
+        height: min(76vh, 680px);
+        min-height: 260px;
+
+        border-radius: 12px;
+    }
+
+    .notepadst-header {
+        padding: 12px;
+    }
+
+    #notepadst-text {
+        padding: 14px;
+        font-size: 16px;
+    }
+}
