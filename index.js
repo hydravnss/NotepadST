@@ -8,7 +8,7 @@
     const $ = (selector, root = document) =>
         root.querySelector(selector);
 
-    // Icône près de la barre de saisie
+    // Bouton d'ouverture du Notepad
     function createButton() {
         if ($(`#${BUTTON_ID}`)) return;
 
@@ -43,7 +43,7 @@
         host.appendChild(button);
     }
 
-    // Création de la fenêtre
+    // Création de la fenêtre Notepad
     function createNotepad() {
         if ($(`#${OVERLAY_ID}`)) return;
 
@@ -54,12 +54,14 @@
             <section id="notepadst-window">
 
                 <header class="notepadst-header">
+
                     <div class="notepadst-title">
                         <i class="fa-solid fa-pen-to-square"></i>
                         <span>Notepad</span>
                     </div>
 
                     <div class="notepadst-actions">
+
                         <button
                             id="notepadst-clear"
                             type="button"
@@ -69,12 +71,21 @@
                         </button>
 
                         <button
+                            id="notepadst-send"
+                            type="button"
+                            aria-label="Envoyer les notes"
+                            title="Envoyer le message">
+                            <i class="fa-solid fa-paper-plane"></i>
+                        </button>
+
+                        <button
                             id="notepadst-close"
                             type="button"
                             aria-label="Fermer"
                             title="Fermer">
                             <i class="fa-solid fa-xmark"></i>
                         </button>
+
                     </div>
                 </header>
 
@@ -95,27 +106,82 @@
 
         const textarea = $("#notepadst-text");
 
+        // Récupérer les notes sauvegardées
         textarea.value = localStorage.getItem(STORAGE_KEY) || "";
+
         updateCount();
 
         // Sauvegarde automatique
         textarea.addEventListener("input", () => {
             localStorage.setItem(STORAGE_KEY, textarea.value);
+
             $("#notepadst-status").textContent = "Enregistré";
+
             updateCount();
         });
 
-        // Fermer en touchant l'extérieur
+        // Fermer en cliquant à l'extérieur
         overlay.addEventListener("click", event => {
             if (event.target === overlay) {
                 closeNotepad();
             }
         });
 
+        // Fermer avec la croix
         $("#notepadst-close").addEventListener(
             "click",
             closeNotepad
         );
+
+        // Envoyer le texte du Notepad au bot
+        $("#notepadst-send").addEventListener("click", () => {
+            const note = textarea.value.trim();
+
+            if (!note) {
+                $("#notepadst-status").textContent = "Note vide";
+                return;
+            }
+
+            // Zone de saisie SillyTavern
+            const sendInput =
+                $("#send_textarea") ||
+                $("#send_form textarea");
+
+            // Bouton d'envoi natif de SillyTavern
+            const sendButton =
+                $("#send_but") ||
+                $("#send_button");
+
+            if (!sendInput) {
+                $("#notepadst-status").textContent =
+                    "Zone de message introuvable";
+                return;
+            }
+
+            if (!sendButton) {
+                $("#notepadst-status").textContent =
+                    "Bouton d'envoi introuvable";
+                return;
+            }
+
+            // Insérer le texte dans la zone de saisie
+            sendInput.value = note;
+
+            // Actualiser l'interface de SillyTavern
+            sendInput.dispatchEvent(
+                new Event("input", { bubbles: true })
+            );
+
+            sendInput.dispatchEvent(
+                new Event("change", { bubbles: true })
+            );
+
+            // Fermer le Notepad
+            closeNotepad();
+
+            // Envoyer le message
+            sendButton.click();
+        });
 
         // Effacer les notes
         $("#notepadst-clear").addEventListener("click", () => {
@@ -123,15 +189,20 @@
 
             if (confirm("Effacer toutes les notes ?")) {
                 textarea.value = "";
+
                 localStorage.setItem(STORAGE_KEY, "");
 
-                $("#notepadst-status").textContent = "Notes effacées";
+                $("#notepadst-status").textContent =
+                    "Notes effacées";
+
                 updateCount();
+
                 textarea.focus();
             }
         });
     }
 
+    // Compteur de caractères
     function updateCount() {
         const textarea = $("#notepadst-text");
         const counter = $("#notepadst-count");
@@ -144,17 +215,25 @@
             `${count} caractère${count === 1 ? "" : "s"}`;
     }
 
+    // Ouvrir le Notepad
     function openNotepad() {
         createNotepad();
 
-        $(`#${OVERLAY_ID}`).classList.add("open");
-        $("#notepadst-text").focus();
+        const overlay = $(`#${OVERLAY_ID}`);
+        const textarea = $("#notepadst-text");
+
+        if (!overlay || !textarea) return;
+
+        overlay.classList.add("open");
+        textarea.focus();
     }
 
+    // Fermer le Notepad
     function closeNotepad() {
         $(`#${OVERLAY_ID}`)?.classList.remove("open");
     }
 
+    // Ouvrir ou fermer
     function toggleNotepad() {
         const overlay = $(`#${OVERLAY_ID}`);
 
@@ -165,6 +244,7 @@
         }
     }
 
+    // Fermer avec Échap
     document.addEventListener("keydown", event => {
         if (
             event.key === "Escape" &&
