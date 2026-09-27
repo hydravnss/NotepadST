@@ -166,7 +166,7 @@
 
 
 /* =========================================
-   BOUTONS EFFACER ET FERMER
+   BOUTONS : EFFACER, ENVOYER, FERMER
 ========================================= */
 
 .notepadst-actions {
@@ -202,6 +202,7 @@
     line-height: 1;
 
     cursor: pointer;
+
     -webkit-tap-highlight-color: transparent;
 }
 
@@ -217,6 +218,19 @@
 
 .notepadst-actions button i {
     pointer-events: none;
+}
+
+
+/* Bouton avion de papier */
+
+#notepadst-send {
+    color: #bbb;
+}
+
+#notepadst-send:hover {
+    color: #fff;
+    background: #292929;
+    border-color: #444;
 }
 
 
@@ -345,11 +359,6 @@
     #notepadst-overlay {
         padding: 16px;
 
-        /*
-         * Centrage dans l'écran.
-         * La fenêtre ne descend pas vers
-         * la barre de saisie.
-         */
         align-items: center;
         justify-content: center;
     }
